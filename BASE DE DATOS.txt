@@ -1,0 +1,171 @@
+-- CREATE DATABASE
+CREATE DATABASE IF NOT EXISTS parqueadero_aeropuerto;
+USE parqueadero_aeropuerto;
+
+-- =====================================================================
+-- 1. TABLAS INDEPENDIENTES Y DE CONFIGURACIÓN
+-- =====================================================================
+
+-- Tabla de roles (Entidad: Rol)
+CREATE TABLE IF NOT EXISTS roles (
+    id_rol INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_rol VARCHAR(50) NOT NULL UNIQUE
+);
+
+-- Tabla de usuarios/empleados (Entidad: Usuario)
+CREATE TABLE IF NOT EXISTS usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_usuario VARCHAR(150) NOT NULL,
+    correo VARCHAR(150) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    id_rol INT NOT NULL,
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol) ON DELETE RESTRICT
+);
+
+-- Tabla de reportes (Entidad: Reporte)
+CREATE TABLE IF NOT EXISTS reportes (
+    id_reporte INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,
+    tipo_reporte ENUM('Financiero', 'Estadistico') NOT NULL,
+    periodo_reporte ENUM('Diario', 'Mensual') NOT NULL,
+    fecha_generado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+);
+
+-- Tabla de tarifas (Entidad: Tarifa adaptada a los rangos del aeropuerto)
+CREATE TABLE IF NOT EXISTS tarifas (
+    id_tarifa INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL, -- Usuario que administra/crea la tarifa
+    tipo_vehiculo VARCHAR(50) NOT NULL UNIQUE,
+    valor_primera_hora DECIMAL(10,2) NOT NULL,       -- Rango 1
+    valor_hora_2_a_12 DECIMAL(10,2) NOT NULL,        -- Rango 2
+    valor_hora_13_a_168 DECIMAL(10,2) NOT NULL,      -- Rango 3
+    valor_hora_169_mas DECIMAL(10,2) NOT NULL,       -- Rango 4
+    valor_mensualidad DECIMAL(10,2) NOT NULL,        -- Rango 5
+    normativa VARCHAR(100) DEFAULT 'Resolución Aeropuerto',
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE RESTRICT
+);
+
+-- Tabla de historial de tarifas (Auditoría de cambios de precios)
+CREATE TABLE IF NOT EXISTS historial_tarifas (
+    id_historial INT AUTO_INCREMENT PRIMARY KEY,
+    id_tarifa INT NOT NULL,
+    id_usuario INT NOT NULL, -- Empleado que hizo la modificación
+    tipo_vehiculo VARCHAR(50) NOT NULL,
+    
+    -- Valores anteriores
+    ant_primera_hora DECIMAL(10,2),
+    ant_hora_2_a_12 DECIMAL(10,2),
+    ant_hora_13_a_168 DECIMAL(10,2),
+    ant_hora_169_mas DECIMAL(10,2),
+    ant_mensualidad DECIMAL(10,2),
+    
+    -- Valores nuevos
+    nue_primera_hora DECIMAL(10,2),
+    nue_hora_2_a_12 DECIMAL(10,2),
+    nue_hora_13_a_168 DECIMAL(10,2),
+    nue_hora_169_mas DECIMAL(10,2),
+    nue_mensualidad DECIMAL(10,2),
+    
+    fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_tarifa) REFERENCES tarifas(id_tarifa) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE RESTRICT
+);
+
+-- =====================================================================
+-- 2. TABLAS DE VEHÍCULOS Y OPERACIÓN
+-- =====================================================================
+
+-- Tabla de vehículos (Entidad: Vehiculo)
+CREATE TABLE IF NOT EXISTS vehiculos (
+    placa_vehiculo VARCHAR(20) PRIMARY KEY,
+    modelo VARCHAR(50) NULL,
+    marca VARCHAR(50) NULL,
+    -- BLINDAJE: Solo permite el formato estándar colombiano AAA111 o AAA11A si tiene entre 5 y 6 caracteres
+    CONSTRAINT chk_formato_placa CHECK (
+        LENGTH(placa_vehiculo) > 6 OR 
+        placa_vehiculo REGEXP '^[A-Z]{3}[0-9]{2}[0-9A-Z]$'
+    )
+);
+
+-- Tabla de clientes (Entidad: Cliente)
+CREATE TABLE IF NOT EXISTS clientes (
+    id_cliente INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_cliente VARCHAR(150) NOT NULL,
+    identificacion VARCHAR(20) NOT NULL UNIQUE,
+    correo VARCHAR(150) NOT NULL UNIQUE,
+    contrasena VARCHAR(255) NOT NULL,
+    telefono VARCHAR(20) NULL,
+    dir_barrio VARCHAR(50) NULL,
+    dir_calle VARCHAR(30) NULL,
+    dir_carrera VARCHAR(30) NULL,
+    dir_numero VARCHAR(20) NULL,
+    placa_vehiculo VARCHAR(20) NULL,
+    FOREIGN KEY (placa_vehiculo) REFERENCES vehiculos(placa_vehiculo) ON DELETE SET NULL
+);
+
+-- Tabla de mensualidades (Entidad: Mensualidad)
+CREATE TABLE IF NOT EXISTS mensualidades (
+    id_mensualidad INT AUTO_INCREMENT PRIMARY KEY,
+    id_cliente INT NOT NULL,
+    placa_vehiculo VARCHAR(20) NOT NULL,
+    id_usuario INT NOT NULL, -- Usuario que procesa la venta
+    fecha_inicio DATE NOT NULL,
+    fecha_final DATE NOT NULL,
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ON DELETE CASCADE,
+    FOREIGN KEY (placa_vehiculo) REFERENCES vehiculos(placa_vehiculo) ON DELETE CASCADE,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE RESTRICT
+);
+
+-- Tabla de control de ingresos y salidas (Entidad: Control_I_S)
+CREATE TABLE IF NOT EXISTS control_i_s (
+    id_control_i_s INT AUTO_INCREMENT PRIMARY KEY,
+    placa_vehiculo VARCHAR(20) NOT NULL,
+    id_tarifa INT NOT NULL,
+    id_usuario INT NOT NULL, 
+    hora_ingreso DATETIME NOT NULL,
+    fecha_ingreso DATE NOT NULL,
+    hora_salida DATETIME NULL,
+    fecha_salida DATE NULL,
+    calculo_tarifa DECIMAL(10,2) DEFAULT 0.00,
+    FOREIGN KEY (placa_vehiculo) REFERENCES vehiculos(placa_vehiculo) ON DELETE CASCADE,
+    FOREIGN KEY (id_tarifa) REFERENCES tarifas(id_tarifa) ON DELETE RESTRICT,
+    FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE RESTRICT
+);
+
+-- Tabla de pagos (Entidad: Pago - Relación 1:1 con Control_I_S)
+CREATE TABLE IF NOT EXISTS pagos (
+    id_pago INT AUTO_INCREMENT PRIMARY KEY,
+    id_control_i_s INT NOT NULL UNIQUE,
+    metodo_pago ENUM('Efectivo', 'Transferencia', 'QR') NOT NULL,
+    FOREIGN KEY (id_control_i_s) REFERENCES control_i_s(id_control_i_s) ON DELETE CASCADE
+);
+
+-- =====================================================================
+-- 3. INSERCIÓN DE DATOS SEMILLA
+-- =====================================================================
+
+-- 1. Insertar Roles del Sistema
+INSERT IGNORE INTO roles (id_rol, nombre_rol) VALUES
+(1, 'Admin'),
+(2, 'Operario');
+
+-- 2. Insertar Administrador Primero
+INSERT IGNORE INTO usuarios (id_usuario, nombre_usuario, correo, contrasena, id_rol)
+VALUES (
+    1,
+    'Carlos Admin',
+    'admin@aeroparking.com',
+    '$2a$10$MemPAPRv898Sc80/mtu2uOaCdNUN6SpXH0GFerviPkfd.mKzHpWiC',
+    1
+);
+
+-- 3. Insertar Tarifas Oficiales ligadas al Administrador Maestro (id_usuario = 1)
+INSERT IGNORE INTO tarifas (id_tarifa, id_usuario, tipo_vehiculo, valor_primera_hora, valor_hora_2_a_12, valor_hora_13_a_168, valor_hora_169_mas, valor_mensualidad) VALUES
+(1, 1, 'Automovil', 4300.00, 2600.00, 35500.00, 31200.00, 178900.00),
+(2, 1, 'Campero', 4300.00, 2600.00, 35500.00, 31200.00, 178900.00),
+(3, 1, 'Camioneta', 4300.00, 2600.00, 35500.00, 31200.00, 178900.00),
+(4, 1, 'Microbus', 4300.00, 2600.00, 35500.00, 31200.00, 178900.00),
+(5, 1, 'Motocarro', 4300.00, 2600.00, 35500.00, 31200.00, 178900.00),
+(6, 1, 'Motocicleta', 2700.00, 1500.00, 18000.00, 15000.00, 67200.00),
+(7, 1, 'Bicicleta', 700.00, 400.00, 4500.00, 4000.00, 16800.00);

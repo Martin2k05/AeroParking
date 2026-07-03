@@ -1,0 +1,157 @@
+.layout {
+  display: flex;
+  height: 100vh;
+  background-color: #0d1630; /* Sincronizado con el fondo de la sidebar */
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.content {
+  flex: 1;
+  padding: 32px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.header h1 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.header p {
+  font-size: 0.875rem;
+  color: #94a3b8;
+}
+
+/* --- Métricas --- */
+.metricasGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+@media (min-width: 768px) {
+  .metricasGrid {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.metricaCard {
+  background-color: #142047; /* Sincronizado con las tarjetas del contenedor */
+  border: 1px solid #22346e; /* Borde suave idéntico al userCard */
+  padding: 24px;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.metricaCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+}
+
+.metricaCard h3 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0;
+  color: #ffffff;
+  line-height: 1;
+}
+
+.metricaCard p {
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin: 0;
+  text-transform: capitalize;
+  text-align: center;
+}
+
+/* --- Gráficos --- */
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 768px) {
+  .chartsGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.chartCard {
+  background-color: #142047; /* Sincronizado con el contenedor oscuro */
+  border: 1px solid #22346e;
+  padding: 24px;
+  border-radius: 16px;
+  height: 350px;
+  display: flex;
+  flex-direction: column;
+}
+
+.chartCard h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+/* --- Actividad Reciente --- */
+.listaActividadInterna {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.itemActividad {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d1630; /* Contraste inverso para los items de la lista */
+  padding: 18px 24px;
+  border-radius: 12px;
+  border: 1px solid #1e294b;
+  transition: background-color 0.2s ease;
+}
+
+.itemActividad:hover {
+  background-color: #111b3b;
+}
+
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #ef4444;
+  display: inline-block;
+  margin-right: 12px;
+  box-shadow: 0 0 8px rgba(239, 68, 68, 0.5);
+}
+
+.textoPlaca {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.horaTexto {
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.loading { 
+  padding: 32px; 
+  text-align: center; 
+  color: #ffffff; 
+  font-size: 1.1rem;
+}

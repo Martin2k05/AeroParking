@@ -1,0 +1,57 @@
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background-color: #1c2541;
+  border-radius: 8px;
+  padding: 16px 20px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  min-width: 300px;
+  max-width: 400px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.success {
+  border-left: 4px solid #10b981;
+}
+
+.error {
+  border-left: 4px solid #ef4444;
+}
+
+.icon {
+  font-size: 18px;
+}
+
+.text {
+  margin: 0;
+  color: #f1f5f9;
+  font-size: 14px;
+  font-weight: 500;
+  flex: 1;
+}
+
+.closeBtn {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 0;
+}
+
+.closeBtn:hover {
+  color: #ffffff;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

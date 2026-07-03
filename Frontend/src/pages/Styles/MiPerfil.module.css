@@ -1,0 +1,424 @@
+/* ==========================================================================
+   MiPerfil.module.css (Estilo Premium Unificado)
+   ========================================================================== */
+
+.container {
+  display: flex;
+  min-height: 100vh;
+  background-color: #0b132b;
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.mainContent {
+  flex: 1;
+  padding: 40px;
+  color: #ffffff;
+  box-sizing: border-box;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.header h1 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin: 0 0 5px 0;
+  color: #ffffff;
+}
+
+.header p {
+  color: #64748b;
+  margin: 0;
+  font-size: 14px;
+}
+
+/* --- SECCIONES Y TARJETAS --- */
+.sectionsStack {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  max-width: 1100px;
+}
+
+.card {
+  background-color: #1c2541;
+  border-radius: 12px;
+  padding: 30px;
+  border: 1px solid #2a3454;
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+}
+
+.card h3 {
+  font-size: 18px;
+  margin: 0 0 24px 0;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.securityHeader {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.securityIcon {
+  color: #64748b;
+}
+
+.securityHeader h3 {
+  margin: 0;
+}
+
+/* --- COMPONENTES DE FORMULARIO --- */
+.gridForm {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .gridForm {
+    grid-template-columns: 1fr;
+  }
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fullWidth {
+  grid-column: span 2;
+}
+
+@media (max-width: 768px) {
+  .fullWidth {
+    grid-column: span 1;
+  }
+}
+
+.inputGroup label {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.inputIcon {
+  position: absolute;
+  left: 16px;
+  color: #4b5563;
+  transition: color 0.3s ease;
+}
+
+/* Estado Bloqueado */
+.inputBloqueado {
+  width: 100%;
+  background-color: rgba(15, 23, 42, 0.4);
+  border: 1px solid #22346e;
+  border-radius: 8px;
+  padding: 12px 16px 12px 44px;
+  color: #64748b;
+  font-size: 14px;
+  outline: none;
+  cursor: not-allowed;
+  box-sizing: border-box;
+}
+
+/* Estado Habilitado / Activo */
+.inputHabilitado {
+  width: 100%;
+  background-color: #0f172a;
+  border: 1px solid #0072ff;
+  border-radius: 8px;
+  padding: 12px 16px 12px 44px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(0, 114, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.inputHabilitado:focus {
+  background-color: #0b1120;
+  box-shadow: 0 0 0 4px rgba(0, 114, 255, 0.25);
+}
+
+.inputHabilitado + .inputIcon {
+  color: #0072ff;
+}
+
+/* --- GRID DE DIRECCIÓN --- */
+.direccionGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .direccionGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.subInputContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.inputLabelHint {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.direccionGrid .subInputContainer input {
+  text-align: left !important;
+  padding-left: 16px !important;
+  padding-right: 16px;
+  width: 100%;
+  background-color: rgba(15, 23, 42, 0.4);
+  border: 1px solid #22346e;
+  border-radius: 8px;
+  font-size: 14px;
+  color: #64748b;
+  box-sizing: border-box;
+  height: 45px;
+  transition: all 0.25s ease;
+}
+
+.direccionGrid .subInputContainer input:focus:not([disabled]) {
+  border-color: #0072ff;
+  color: #ffffff;
+  outline: none;
+  background-color: #0f172a;
+}
+
+/* --- BOTONES CON MICRO-INTERACCIONES PREMIUM --- */
+.btnEdit, .btnPrimary {
+  background: linear-gradient(135deg, #0072ff, #00c6ff);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 14px rgba(0, 114, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btnEdit:hover, .btnPrimary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(0, 114, 255, 0.4);
+  filter: brightness(1.08);
+}
+
+.btnSave, .btnModalSubmit {
+  background: linear-gradient(135deg, #10b981, #059669);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btnSave:hover, .btnModalSubmit:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(16, 185, 129, 0.4);
+  filter: brightness(1.05);
+}
+
+.btnSecondary {
+  background-color: transparent;
+  color: #94a3b8;
+  border: 1px solid #2a3454;
+  padding: 12px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btnSecondary:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+  color: #ffffff;
+  border-color: #4b5563;
+  transform: translateY(-2px);
+}
+
+/* --- VENTANA MODAL PREMIUM --- */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(7, 11, 22, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: linear-gradient(145deg, #161e35, #1c2541);
+  border: 1px solid rgba(0, 114, 255, 0.25);
+  border-radius: 16px;
+  width: 90%;
+  max-width: 480px;
+  padding: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 114, 255, 0.05);
+  animation: modalSlideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+@keyframes modalSlideUp {
+  from { opacity: 0; transform: scale(0.96) translateY(20px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+  border-bottom: 1px solid rgba(34, 52, 110, 0.5);
+  padding-bottom: 18px;
+}
+
+.modalHeader h3 {
+  margin: 0 0 4px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.3px;
+}
+
+.modalSubtitle {
+  margin: 0;
+  font-size: 13px;
+  color: #64748b;
+}
+
+.btnCloseX {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  color: #64748b;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btnCloseX:hover {
+  color: #f1f5f9;
+  background-color: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.2);
+}
+
+.modalForm {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.modalInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.modalInputGroup label {
+  font-size: 13px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+.modalForm .inputWrapper input {
+  width: 100%;
+  background-color: #0f172a;
+  border: 1px solid #22346e;
+  border-radius: 8px;
+  padding: 12px 48px 12px 44px;
+  color: #ffffff;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+}
+
+.modalForm .inputWrapper input:focus {
+  border-color: #0072ff;
+  background-color: #0b1120;
+  box-shadow: 0 0 0 4px rgba(0, 114, 255, 0.15);
+}
+
+.modalInputIcon {
+  position: absolute;
+  left: 16px;
+  color: #4b5563;
+  transition: color 0.25s ease;
+  pointer-events: none;
+}
+
+.modalForm .inputWrapper input:focus ~ .modalInputIcon {
+  color: #0072ff;
+}
+
+.btnTogglePassword {
+  position: absolute;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #4b5563;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.btnTogglePassword:hover {
+  color: #00c6ff;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+}

@@ -1,0 +1,347 @@
+/* ==========================================================================
+GestionClientes.module.css (Estilo Premium Unificado)
+========================================================================== */
+
+.dashboardContainer {
+display: flex;
+height: 100vh;
+width: 100vw;
+background-color: #0b132b;
+color: #ffffff;
+overflow: hidden;
+font-family: 'Inter', sans-serif;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+.mainContent {
+flex: 1;
+padding: 40px;
+overflow-y: auto;
+box-sizing: border-box;
+background-color: #0b132b;
+}
+
+/* --- ENCABEZADO --- */
+.header h1 {
+font-size: 28px;
+font-weight: 600;
+letter-spacing: -0.5px;
+margin: 0;
+color: #ffffff;
+}
+
+.header p {
+color: #64748b;
+margin: 6px 0 0 0;
+font-size: 14px;
+}
+
+/* --- BARRA DE BÚSQUEDA --- */
+.tableActions {
+margin-top: 30px;
+display: flex;
+justify-content: flex-start;
+align-items: center;
+}
+
+.searchWrapper {
+position: relative;
+width: 100%;
+max-width: 450px;
+display: flex;
+align-items: center;
+}
+
+.searchIcon {
+position: absolute;
+left: 16px;
+color: #64748b;
+pointer-events: none;
+transition: transform 0.3s ease, color 0.3s ease;
+}
+
+.searchWrapper:focus-within .searchIcon {
+color: #3b82f6;
+transform: scale(1.05);
+}
+
+.searchInput {
+width: 100%;
+background-color: #1c2541;
+border: 1px solid #2a3454;
+border-radius: 10px;
+padding: 12px 16px 12px 46px;
+color: #ffffff;
+font-size: 14px;
+outline: none;
+transition: border-color 0.4s ease, box-shadow 0.4s ease, background-color 0.4s ease;
+}
+
+.searchInput:focus {
+background-color: #111a36;
+border-color: #3b82f6;
+box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+.searchInput::placeholder {
+color: #64748b;
+}
+
+/* --- TABLA DE DATOS --- */
+.tableContainer {
+background-color: #1c2541;
+border: 1px solid #2a3454;
+border-radius: 12px;
+margin-top: 24px;
+box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+overflow: hidden;
+transition: border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.tableContainer:hover {
+border-color: #2a3454;
+box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+}
+
+.customTable {
+width: 100%;
+border-collapse: collapse;
+text-align: left;
+font-size: 14px;
+}
+
+.customTable th {
+background-color: #161f38;
+color: #64748b;
+font-weight: 600;
+padding: 16px 20px;
+border-bottom: 1px solid #2a3454;
+text-transform: uppercase;
+font-size: 11px;
+letter-spacing: 0.5px;
+}
+
+.customTable td {
+padding: 16px 20px;
+color: #cbd5e1;
+border-bottom: 1px solid #2a3454;
+vertical-align: middle;
+transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.customTable tbody tr:last-child td {
+border-bottom: none;
+}
+
+.customTable tbody tr {
+transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.customTable tbody tr:hover td {
+background-color: rgba(59, 130, 246, 0.04);
+color: #ffffff;
+}
+
+.clientNameCell {
+font-weight: 500;
+color: #ffffff;
+}
+
+.addressCell {
+max-width: 220px;
+white-space: nowrap;
+overflow: hidden;
+text-overflow: ellipsis;
+color: #94a3b8;
+}
+
+/* --- BADGES Y BOTONES --- */
+.placaBadge {
+font-family: 'Courier New', Courier, monospace;
+background-color: rgba(16, 185, 129, 0.1);
+color: #10b981;
+padding: 4px 10px;
+border-radius: 6px;
+border: 1px dashed rgba(16, 185, 129, 0.4);
+font-weight: bold;
+letter-spacing: 1px;
+display: inline-block;
+transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease;
+}
+
+.customTable tbody tr:hover .placaBadge {
+transform: scale(1.05);
+background-color: rgba(16, 185, 129, 0.2);
+}
+
+.noPlacaBadge {
+color: #64748b;
+font-style: italic;
+font-size: 13px;
+}
+
+/* --- BOTONES DE ACCIÓN UNIFICADOS --- */
+.actionsWrapper {
+display: flex;
+gap: 8px;
+justify-content: center;
+align-items: center;
+}
+
+.editButtonRow {
+background-color: rgba(59, 130, 246, 0.1);
+border: 1px solid rgba(59, 130, 246, 0.2);
+color: #3b82f6;
+padding: 8px;
+border-radius: 8px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editButtonRow:hover {
+background-color: #3b82f6;
+color: #ffffff;
+border-color: #3b82f6;
+box-shadow: 0 10px 20px -10px rgba(59, 130, 246, 0.5);
+transform: translateY(-2px);
+}
+
+.saveButtonRow {
+background-color: rgba(16, 185, 129, 0.1);
+border: 1px solid rgba(16, 185, 129, 0.2);
+color: #10b981;
+padding: 8px;
+border-radius: 8px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.saveButtonRow:hover {
+background-color: #10b981;
+color: #ffffff;
+border-color: #10b981;
+box-shadow: 0 10px 20px -10px rgba(16, 185, 129, 0.5);
+transform: translateY(-2px);
+}
+
+.deleteButtonRow {
+background-color: rgba(239, 68, 68, 0.1);
+border: 1px solid rgba(239, 68, 68, 0.2);
+color: #ef4444;
+padding: 8px;
+border-radius: 8px;
+cursor: pointer;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.deleteButtonRow:hover {
+background-color: #ef4444;
+color: #ffffff;
+border-color: #ef4444;
+box-shadow: 0 10px 20px -10px rgba(239, 68, 68, 0.5);
+transform: translateY(-2px);
+}
+
+/* --- INPUT DE EDICIÓN DE PLACA --- */
+.searchInputPlaca {
+width: 90px;
+background-color: #1c2541;
+border: 2px solid #3b82f6;
+border-radius: 6px;
+padding: 6px 10px;
+color: #ffffff;
+font-size: 13px;
+font-weight: 700;
+text-transform: uppercase;
+text-align: center;
+letter-spacing: 0.5px;
+outline: none;
+box-shadow: 0 0 8px rgba(59, 130, 246, 0.2);
+transition: border-color 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+}
+
+.searchInputPlaca:focus {
+background-color: #111a36;
+border-color: #60a5fa;
+box-shadow: 0 0 14px rgba(59, 130, 246, 0.5);
+}
+
+/* --- ESTADO VACÍO --- */
+.emptyTableState {
+text-align: center;
+padding: 50px 20px;
+color: #64748b;
+}
+
+.emptyTableState p {
+margin: 0;
+font-size: 15px;
+}
+
+/* --- NOTIFICACIÓN FLOTANTE FIJA --- */
+.toastNotification {
+position: fixed;
+top: 24px;
+right: 24px;
+color: #ffffff;
+padding: 14px 22px;
+border-radius: 10px;
+box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
+display: flex;
+align-items: center;
+gap: 14px;
+z-index: 9999;
+backdrop-filter: blur(12px);
+font-size: 14px;
+font-weight: 500;
+animation: slideInToast 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toastSuccess {
+background-color: rgba(16, 185, 129, 0.15);
+border: 1px solid rgba(16, 185, 129, 0.4);
+box-shadow: 0 15px 30px -10px rgba(16, 185, 129, 0.2);
+}
+
+.toastError {
+background-color: rgba(239, 68, 68, 0.15);
+border: 1px solid rgba(239, 68, 68, 0.4);
+box-shadow: 0 15px 30px -10px rgba(239, 68, 68, 0.2);
+}
+
+.toastCloseButton {
+background: transparent;
+border: none;
+color: rgba(255, 255, 255, 0.6);
+cursor: pointer;
+display: flex;
+align-items: center;
+padding: 0;
+transition: color 0.2s, transform 0.2s;
+}
+
+.toastCloseButton:hover {
+color: #ffffff;
+transform: scale(1.1);
+}
+
+@keyframes slideInToast {
+from {
+transform: translateX(120%) scale(0.9);
+opacity: 0;
+}
+to {
+transform: translateX(0) scale(1);
+opacity: 1;
+}
+}

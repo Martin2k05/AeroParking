@@ -1,0 +1,226 @@
+/* ==========================================================================
+   ClienteDashboard.module.css (Estilo Premium Unificado - Corregido)
+   ========================================================================== */
+
+.layout {
+  display: flex;
+  height: 100vh;
+  background-color: #0b132b;
+  color: #ffffff;
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.content h1 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.5px;
+  margin: 0 0 5px 0;
+  color: #ffffff;
+}
+
+.content p {
+  color: #64748b;
+  margin-top: 6px;
+  font-size: 14px;
+}
+
+/* --- GRID DE TARJETAS --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 30px;
+}
+
+@media (max-width: 1024px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tarjetas Estilo Premium con Animación Reintegrada */
+.card {
+  background-color: #1c2541;
+  border: 1px solid #2a3454;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 30px -15px rgba(0, 0, 0, 0.3);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.4s ease, 
+              box-shadow 0.4s ease;
+}
+
+/* Efecto Hover en la Tarjeta Flotante */
+.card:hover {
+  transform: translateY(-6px);
+  border-color: #3b82f6;
+  box-shadow: 0 20px 40px -20px rgba(0, 102, 255, 0.4);
+}
+
+/* Contenedor de Iconos Interactivos */
+.iconBox {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* El icono rotará sutilmente al pasar el mouse por la tarjeta */
+.card:hover .iconBox {
+  transform: scale(1.1) rotate(4deg);
+}
+
+.lucideIcon {
+  transition: transform 0.3s ease;
+}
+
+.bgBlue { 
+  background-color: #0072ff; 
+  color: #ffffff;
+}
+.bgPink { 
+  background-color: #a855f7; 
+  color: #ffffff;
+}
+.bgGreen { 
+  background-color: #10b981; 
+  color: #ffffff;
+}
+
+.card h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin: 0;
+  color: #ffffff;
+}
+
+.bgGreen + h2 {
+  font-family: 'Courier New', Courier, monospace;
+  background: #1e293b;
+  padding: 4px 12px;
+  border-radius: 8px;
+  display: inline-block;
+  border: 1px dashed #10b981;
+  color: #10b981;
+  letter-spacing: 2px;
+}
+
+.card .label {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 500;
+  margin: 0;
+  order: -1;
+}
+
+.card .footer {
+  color: #4b5563;
+  font-size: 12px;
+  margin: 0;
+}
+
+/* --- BANNER DE ALERTA MEJORADO Y ESPACIADO --- */
+.alertBanner {
+  background-color: rgba(255, 159, 28, 0.06);
+  border: 1px solid rgba(255, 159, 28, 0.2);
+  border-radius: 16px;
+  padding: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 32px;
+  box-shadow: 0 10px 30px -10px rgba(255, 159, 28, 0.1);
+}
+
+.alertLeft {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.alertIconContainer {
+  background-color: rgba(255, 159, 28, 0.15);
+  color: #ff9f1c;
+  padding: 14px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.alertContent {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.alertContent h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.alertContent p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.btnRenew {
+  background-color: #ff9f1c;
+  color: #ffffff;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 12px rgba(255, 159, 28, 0.2);
+}
+
+.btnRenew:hover {
+  background-color: #fca311;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(255, 159, 28, 0.4);
+}
+
+@media (max-width: 768px) {
+  .alertBanner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  
+  .alertLeft {
+    align-items: flex-start;
+  }
+  
+  .btnRenew {
+    width: 100%;
+    text-align: center;
+  }
+}

@@ -1,0 +1,151 @@
+.sidebar {
+  width: 260px;
+  background-color: #0d1630;
+  border-right: 1px solid #1e294b;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  padding: 24px 16px;
+  position: sticky;
+  top: 0;
+  box-sizing: border-box;
+  z-index: 100;
+  font-family: sans-serif;
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding: 0 8px;
+}
+
+.logoIcon {
+  background: linear-gradient(135deg, #0066ff, #00bfff);
+  padding: 8px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(0, 102, 255, 0.3);
+}
+
+.logoText h1 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin: 0;
+  color: #ffffff;
+}
+
+.logoText p {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.userCard {
+  background-color: #142047;
+  border: 1px solid #22346e;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 24px;
+}
+
+.userCard p {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin: 0;
+}
+
+.userCard h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 4px 0 0 0;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  margin-top: 8px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.badgeAdmin { color: #f87171; background: rgba(248, 113, 113, 0.1); }
+.badgeOperario { color: #22d3ee; background: rgba(34, 211, 238, 0.1); }
+.badgeCliente { color: #2dd4bf; background: rgba(45, 212, 191, 0.1); }
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.menuBtn {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #94a3b8;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.2s ease;
+}
+
+.menuBtn:hover {
+  background-color: #142047;
+  color: #ffffff;
+}
+
+.menuBtnActive {
+  width: 100%;
+  text-align: left;
+  background: linear-gradient(90deg, #0052d4, #4364f7);
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 4px 12px rgba(67, 100, 247, 0.2);
+}
+
+.logoutBtn {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  color: #f87171;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: background 0.2s;
+}
+
+.logoutBtn:hover {
+  background-color: rgba(248, 113, 113, 0.1);
+}

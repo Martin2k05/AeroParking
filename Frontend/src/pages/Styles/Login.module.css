@@ -1,0 +1,168 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 24px;
+  background-color: #090f24;
+  position: relative;
+  overflow: hidden;
+  /* SOLUCIÓN: Hereda la fuente correcta y suavizado de texto desde el Login */
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Destello de luz decorativo de fondo tipo AeroPuerto de noche */
+.container::before {
+  content: '';
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(0, 102, 255, 0.15) 0%, rgba(0,0,0,0) 70%);
+  top: 10%;
+  left: 10%;
+  pointer-events: none;
+}
+
+/* Caja de Login con efecto de Cristal Traslúcido Moderno (Glassmorphism) */
+.box {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(13, 22, 48, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 24px;
+  padding: 40px;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  z-index: 1;
+  box-sizing: border-box;
+}
+
+.iconWrapper {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.icon {
+  background: linear-gradient(135deg, #0052d4, #00bfff);
+  padding: 16px;
+  border-radius: 20px;
+  box-shadow: 0 8px 30px rgba(0, 102, 255, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Animación de despegue sutil en el icono de avión */
+.lucideIcon {
+  animation: floatEffect 3s ease-in-out infinite;
+}
+
+@keyframes floatEffect {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px) scale(1.02); }
+}
+
+.title {
+  color: #ffffff;
+  font-size: 2rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.5px;
+  margin: 0;
+}
+
+.subtitle {
+  text-align: center;
+  color: #64748b;
+  font-size: 0.9rem;
+  font-weight: 500;
+  margin-top: 6px;
+  margin-bottom: 36px;
+}
+
+.formGroup {
+  margin-bottom: 24px;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Campos de texto estilizados con transición de enfoque de neón */
+.formGroup input {
+  width: 100%;
+  background-color: rgba(20, 32, 71, 0.8);
+  border: 1px solid #22346e;
+  border-radius: 14px;
+  padding: 14px 18px;
+  color: #ffffff;
+  font-size: 1rem;
+  box-sizing: border-box;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.formGroup input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  background-color: #142047;
+  box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15);
+}
+
+.formGroup input::placeholder {
+  color: #475569;
+}
+
+/* Botón de envío dinámico con transición de escala */
+.submitBtn {
+  width: 100%;
+  background: linear-gradient(90deg, #0052d4, #00bfff);
+  color: #ffffff;
+  font-weight: 700;
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-size: 1rem;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 102, 255, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.submitBtn:hover {
+  transform: scale(1.01);
+  box-shadow: 0 6px 24px rgba(0, 191, 255, 0.5); /* Corregido el typo en el color hexadecimal */
+  filter: brightness(1.05);
+}
+
+.submitBtn:active {
+  transform: scale(0.99);
+}
+
+.linkWrapper {
+  text-align: center;
+  margin-top: 28px;
+}
+
+.link {
+  font-size: 0.9rem;
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.link:hover {
+  color: #93c5fd;
+  text-decoration: none;
+}
