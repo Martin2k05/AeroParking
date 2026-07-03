@@ -52,21 +52,21 @@ CREATE TABLE IF NOT EXISTS historial_tarifas (
     id_tarifa INT NOT NULL,
     id_usuario INT NOT NULL, -- Empleado que hizo la modificación
     tipo_vehiculo VARCHAR(50) NOT NULL,
-    
+   
     -- Valores anteriores
     ant_primera_hora DECIMAL(10,2),
     ant_hora_2_a_12 DECIMAL(10,2),
     ant_hora_13_a_168 DECIMAL(10,2),
     ant_hora_169_mas DECIMAL(10,2),
     ant_mensualidad DECIMAL(10,2),
-    
+   
     -- Valores nuevos
     nue_primera_hora DECIMAL(10,2),
     nue_hora_2_a_12 DECIMAL(10,2),
     nue_hora_13_a_168 DECIMAL(10,2),
     nue_hora_169_mas DECIMAL(10,2),
     nue_mensualidad DECIMAL(10,2),
-    
+   
     fecha_modificacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_tarifa) REFERENCES tarifas(id_tarifa) ON DELETE CASCADE,
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE RESTRICT
@@ -83,7 +83,7 @@ CREATE TABLE IF NOT EXISTS vehiculos (
     marca VARCHAR(50) NULL,
     -- BLINDAJE: Solo permite el formato estándar colombiano AAA111 o AAA11A si tiene entre 5 y 6 caracteres
     CONSTRAINT chk_formato_placa CHECK (
-        LENGTH(placa_vehiculo) > 6 OR 
+        LENGTH(placa_vehiculo) > 6 OR
         placa_vehiculo REGEXP '^[A-Z]{3}[0-9]{2}[0-9A-Z]$'
     )
 );
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS control_i_s (
     id_control_i_s INT AUTO_INCREMENT PRIMARY KEY,
     placa_vehiculo VARCHAR(20) NOT NULL,
     id_tarifa INT NOT NULL,
-    id_usuario INT NOT NULL, 
+    id_usuario INT NOT NULL,
     hora_ingreso DATETIME NOT NULL,
     fecha_ingreso DATE NOT NULL,
     hora_salida DATETIME NULL,
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS pagos (
 );
 
 -- =====================================================================
--- 3. INSERCIÓN DE DATOS SEMILLA
+-- 3. INSERCIÓN DE DATOS SEMILLA (CONFIGURACIÓN)
 -- =====================================================================
 
 -- 1. Insertar Roles del Sistema
@@ -169,3 +169,216 @@ INSERT IGNORE INTO tarifas (id_tarifa, id_usuario, tipo_vehiculo, valor_primera_
 (5, 1, 'Motocarro', 4300.00, 2600.00, 35500.00, 31200.00, 178900.00),
 (6, 1, 'Motocicleta', 2700.00, 1500.00, 18000.00, 15000.00, 67200.00),
 (7, 1, 'Bicicleta', 700.00, 400.00, 4500.00, 4000.00, 16800.00);
+
+
+-- =====================================================================
+-- 4. NUEVO: INSERCIÓN DE DATOS SEMILLA OPERACIONALES (PARA REPORTES)
+-- =====================================================================
+
+USE parqueadero_aeropuerto;
+
+-- =====================================================================
+-- 1. REGISTRAR VEHÍCULOS DE PRUEBA
+-- =====================================================================
+INSERT IGNORE INTO vehiculos (placa_vehiculo, modelo, marca) VALUES
+-- Automóviles (40)
+('ABC123', 'Picanto', 'Kia'), ('DEF456', 'Onix', 'Chevrolet'), ('GHI789', 'Sandero', 'Renault'), 
+('JKL012', 'Mazda 3', 'Mazda'), ('MNO345', 'Corolla', 'Toyota'), ('PQR678', 'Civic', 'Honda'), 
+('STU901', 'Gol', 'Volkswagen'), ('VWX234', 'Fiesta', 'Ford'), ('YZA567', 'Tracker', 'Chevrolet'), 
+('BCD890', 'Duster', 'Renault'), ('EFG123', 'Swift', 'Suzuki'), ('HIJ456', 'Kwid', 'Renault'), 
+('KLM789', 'Tucson', 'Hyundai'), ('NOP012', 'Sportage', 'Kia'), ('QRS345', 'Uno', 'Fiat'), 
+('TUV678', 'March', 'Nissan'), ('WXY901', 'Versa', 'Nissan'), ('ZAB234', 'Jetta', 'Volkswagen'), 
+('CDE567', 'EcoSport', 'Ford'), ('FGH890', 'Captiva', 'Chevrolet'), ('IJK111', 'Clio', 'Renault'), 
+('LMN222', '308', 'Peugeot'), ('OPQ333', 'Cerato', 'Kia'), ('RST444', 'Sentra', 'Nissan'), 
+('UVW555', 'Yaris', 'Toyota'), ('XYZ666', 'Ibiza', 'SEAT'), ('AAB111', 'Leon', 'SEAT'), 
+('BBC222', 'Cruze', 'Chevrolet'), ('CCD333', 'Focus', 'Ford'), ('DDE444', 'Prado', 'Toyota'), 
+('EEF555', 'Hilux', 'Toyota'), ('FFG666', 'Amarok', 'Volkswagen'), ('GGH777', 'Frontier', 'Nissan'), 
+('HHI888', 'L200', 'Mitsubishi'), ('IIJ999', 'Sorento', 'Kia'), ('JJK000', 'Qashqai', 'Nissan'), 
+('KKL112', 'CX-5', 'Mazda'), ('LLM223', 'CX-30', 'Mazda'), ('MMN334', 'Rio', 'Kia'), 
+('NNO445', 'Accent', 'Hyundai'),
+
+-- Motocicletas (40)
+('AAA11A', 'Pulsar NS 200', 'Bajaj'), ('BBB22B', 'Apache RTR', 'TVS'), ('CCC33C', 'FZ25', 'Yamaha'), 
+('DDD44D', 'CBF125', 'Honda'), ('EEE55E', 'Nmax', 'Yamaha'), ('FFF66F', 'Gixxer', 'Suzuki'), 
+('GGG77G', 'Xtz 125', 'Yamaha'), ('HHH88H', 'Xr 150', 'Honda'), ('III99I', 'Splendor', 'Hero'), 
+('JJJ00J', 'Agility Go', 'Kymco'), ('KKK11K', 'Duke 200', 'KTM'), ('LLL22L', 'DR150', 'Suzuki'), 
+('MMM33M', 'Crypton', 'Yamaha'), ('NNN44N', 'Bws X', 'Yamaha'), ('OOO55O', 'Flex Ultra', 'AKT'), 
+('PPP66P', 'Dynamic Pro', 'Kymco'), ('QQQ77Q', 'Twister 250', 'Honda'), ('RRR88R', 'MT-03', 'Yamaha'), 
+('SSS99S', 'Z400', 'Kawasaki'), ('TTT00T', 'KTM RC 390', 'KTM'), ('UUU11U', 'CR4 125', 'AKT'), 
+('VVV22V', 'Tornado 250', 'Honda'), ('WWW33W', 'G 310 GS', 'BMW'), ('XXX44X', 'Himalayan', 'Royal Enfield'), 
+('YYY55Y', 'Interceptor', 'Royal Enfield'), ('ZZZ66Z', 'V-Strom 650', 'Suzuki'), ('ABA12A', 'R15', 'Yamaha'), 
+('BCB34B', 'CBR 250', 'Honda'), ('CDC56C', 'Ninja 400', 'Kawasaki'), ('DED78D', 'Benelli 180S', 'Benelli'), 
+('EFE90E', 'MRX 150', 'Victory'), ('FGF12F', 'One ST', 'Victory'), ('GHG34G', 'Switch', 'Auteco'), 
+('HIH56H', 'Combat 125', 'Auteco'), ('IJI78I', 'Maxsym 400', 'SYM'), ('JKJ90J', 'Crox 125', 'SYM'), 
+('LKL12L', 'PCX 150', 'Honda'), ('MLM34M', 'Seta 125', 'Vespa'), ('NMN56N', 'Vespa GTS', 'Vespa'), 
+('ONO78O', 'SR Max 300', 'Aprilia'),
+
+-- Bicicletas (20)
+('1029384756', 'Hawk', 'GW'), ('9876543210', 'Aspect', 'Scott'), ('5647382910', 'Marlin 5', 'Trek'), 
+('112233445566', 'Rockhopper', 'Specialized'), ('998877665544', 'ATX', 'Giant'), ('554433221100', 'Trail 7', 'Cannondale'), 
+('123456789012', 'Alivio MT', 'Shimano'), ('204060801030', 'Aquila', 'Optimus'), ('706050403020', 'Sport', 'Drive'), 
+('889900112233', 'Talon', 'Venzo'), ('445566778899', 'Carbon', 'X-Fire'), ('334455667788', 'E-Bike', 'Stark'), 
+('223344556677', 'Mojave', 'Raleigh'), ('443322110099', 'Ultra', 'KTM'), ('990011223344', 'Alma', 'Orbea'), 
+('887766554433', 'Big Nine', 'Merida'), ('776655443322', 'TwoStroke', 'BMC'), ('665544332211', 'Dogma', 'Pinarello'), 
+('556677889900', 'Turis', 'Monark'), ('121234345656', 'Fixie', 'Generic');
+
+
+-- =====================================================================
+-- 2. REGISTRAR 20 CLIENTES DE PRUEBA
+-- =====================================================================
+INSERT IGNORE INTO clientes (id_cliente, nombre_cliente, identificacion, correo, contrasena, telefono, dir_barrio, dir_calle, dir_carrera, dir_numero, placa_vehiculo) VALUES
+(1, 'Martín Rodríguez', '111222333', 'martin@correo.com', 'pass123', '3151234567', 'Llanogrande', 'Calle 10', 'Carrera 40', 'No 12-34', 'ABC123'),
+(2, 'Juan Pérez', '100200300', 'juan@correo.com', 'pass123', '3109876543', 'El Prado', 'Calle 5', 'Carrera 23', 'No 4-12', 'DEF456'),
+(3, 'María Gómez', '100200400', 'maria@correo.com', 'pass123', '3201234567', 'Centro', 'Calle 12', 'Carrera 10', 'No 9-87', 'AAA11A'),
+(4, 'Andrés Felipe', '100200500', 'andres@correo.com', 'pass123', '3167654321', 'Las Mercedes', 'Calle 45', 'Carrera 56', 'No 2-10', '1029384756'),
+(5, 'Luisa Fernanda', '100200600', 'luisa@correo.com', 'pass123', '3182345678', 'Zamorano', 'Calle 67', 'Carrera 1A', 'No 34-5', 'GHI789'),
+(6, 'Carlos Alberto', '100200700', 'carlos@correo.com', 'pass123', '3145678901', 'Mirriñao', 'Calle 32', 'Carrera 28', 'No 15-20', 'BBB22B'),
+(7, 'Diana Marcela', '100200800', 'diana@correo.com', 'pass123', '3113456789', 'La Italia', 'Calle 8', 'Carrera 35', 'No 22-11', '9876543210'),
+(8, 'Santiago Usma', '100200900', 'santiago@correo.com', 'pass123', '3174561230', 'Sesquicentenario', 'Calle 19', 'Carrera 19', 'No 19-19', 'JKL012'),
+(9, 'Camila Andrea', '100200101', 'camila@correo.com', 'pass123', '3128904567', 'Bosques de Pomona', 'Calle 2B', 'Carrera 42', 'No 50-12', 'CCC33C'),
+(10, 'Diego Fernando', '100200202', 'diego@correo.com', 'pass123', '3137890123', 'La Emilia', 'Calle 14', 'Carrera 15', 'No 6-40', '5647382910'),
+(11, 'Paula Valentina', '100200303', 'paula@correo.com', 'pass123', '3196781234', 'Ciudadela Deportiva', 'Calle 26', 'Carrera 33', 'No 44-12', 'MNO345'),
+(12, 'Alejandro Toro', '100200404', 'alejo@correo.com', 'pass123', '3154567890', 'San Pedro', 'Calle 52', 'Carrera 4', 'No 12-90', 'DDD44D'),
+(13, 'Daniela Rojas', '100200505', 'daniela@correo.com', 'pass123', '3213450987', 'Parque Rada', 'Calle 30', 'Carrera 29', 'No 30-45', '112233445566'),
+(14, 'Sebastián Muñoz', '100200606', 'sebas@correo.com', 'pass123', '3102347891', 'Los Mangos', 'Calle 9', 'Carrera 18', 'No 7-15', 'PQR678'),
+(15, 'Natalia López', '100200707', 'natalia@correo.com', 'pass123', '3168901234', 'Portal de las Palmas', 'Calle 5B', 'Carrera 44', 'No 21-09', 'EEE55E'),
+(16, 'Javier Cardona', '100200808', 'javier@correo.com', 'pass123', '3187652341', 'La Factoría', 'Calle 21', 'Carrera 31', 'No 11-12', '998877665544'),
+(17, 'Laura Sofía', '100200909', 'laura@correo.com', 'pass123', '3142345612', 'Fray Luis de León', 'Calle 11', 'Carrera 25', 'No 8-80', 'STU901'),
+(18, 'Mateo Villa', '100200111', 'mateo@correo.com', 'pass123', '3119083456', 'Betania', 'Calle 4', 'Carrera 41', 'No 10-23', 'FFF66F'),
+(19, 'Valentina Restrepo', '100200222', 'vale@correo.com', 'pass123', '3134567123', 'Las Delicias', 'Calle 13', 'Carrera 12', 'No 5-55', '554433221100'),
+(20, 'Nicolás Herrera', '100200333', 'nicolas@correo.com', 'pass123', '3178901245', 'Urb. Altamira', 'Calle 3A', 'Carrera 38', 'No 45-20', 'VWX234');
+
+
+-- =====================================================================
+-- 3. REGISTRAR MOVIMIENTOS EN EL CONTROL DE INGRESOS Y SALIDAS
+-- =====================================================================
+-- Nota: id_tarifa 1 = Automovil, 6 = Motocicleta, 7 = Bicicleta | id_usuario: 1
+INSERT IGNORE INTO control_i_s (placa_vehiculo, id_tarifa, id_usuario, hora_ingreso, fecha_ingreso, hora_salida, fecha_salida, calculo_tarifa) VALUES
+-- Movimientos de HOY (Automóviles y Motocicletas con salida)
+('ABC123', 1, 1, NOW() - INTERVAL 4 HOUR, CAST(NOW() AS DATE), NOW() - INTERVAL 1 HOUR, CAST(NOW() AS DATE), 12100.00),
+('DEF456', 1, 1, NOW() - INTERVAL 3 HOUR, CAST(NOW() AS DATE), NOW() - INTERVAL 2 HOUR, CAST(NOW() AS DATE), 4300.00),
+('GHI789', 1, 1, NOW() - INTERVAL 5 HOUR, CAST(NOW() AS DATE), NOW() - INTERVAL 1 HOUR, CAST(NOW() AS DATE), 14700.00),
+('AAA11A', 6, 1, NOW() - INTERVAL 2 HOUR, CAST(NOW() AS DATE), NOW() - INTERVAL 30 MINUTE, CAST(NOW() AS DATE), 4200.00),
+('BBB22B', 6, 1, NOW() - INTERVAL 4 HOUR, CAST(NOW() AS DATE), NOW() - INTERVAL 1 HOUR, CAST(NOW() AS DATE), 5700.00),
+('CCC33C', 6, 1, NOW() - INTERVAL 3 HOUR, CAST(NOW() AS DATE), NOW() - INTERVAL 2 HOUR, CAST(NOW() AS DATE), 2700.00),
+
+-- Movimientos de HOY (Siguen adentro / Bicicletas sin salida ni cobro)
+('JKL012', 1, 1, NOW() - INTERVAL 6 HOUR, CAST(NOW() AS DATE), NULL, NULL, 0.00),
+('YZA567', 1, 1, NOW() - INTERVAL 2 HOUR, CAST(NOW() AS DATE), NULL, NULL, 0.00),
+('DDD44D', 6, 1, NOW() - INTERVAL 5 HOUR, CAST(NOW() AS DATE), NULL, NULL, 0.00),
+('III99I', 6, 1, NOW() - INTERVAL 3 HOUR, CAST(NOW() AS DATE), NULL, NULL, 0.00),
+('1029384756', 7, 1, NOW() - INTERVAL 4 HOUR, CAST(NOW() AS DATE), NULL, NULL, 0.00),
+('9876543210', 7, 1, NOW() - INTERVAL 2 HOUR, CAST(NOW() AS DATE), NULL, NULL, 0.00),
+('5647382910', 7, 1, NOW() - INTERVAL 1 HOUR, CAST(NOW() AS DATE), NULL, NULL, 0.00),
+
+-- Movimientos de AYER (Con salida)
+('MNO345', 1, 1, NOW() - INTERVAL 1 DAY - INTERVAL 8 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NOW() - INTERVAL 1 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), 25100.00),
+('PQR678', 1, 1, NOW() - INTERVAL 1 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NOW() - INTERVAL 1 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), 6900.00),
+('STU901', 1, 1, NOW() - INTERVAL 1 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NOW() - INTERVAL 1 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), 4300.00),
+('VWX234', 1, 1, NOW() - INTERVAL 1 DAY - INTERVAL 7 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NOW() - INTERVAL 1 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), 19900.00),
+('EEE55E', 6, 1, NOW() - INTERVAL 1 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NOW() - INTERVAL 1 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), 10200.00),
+('FFF66F', 6, 1, NOW() - INTERVAL 1 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NOW() - INTERVAL 1 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), 4200.00),
+('GGG77G', 6, 1, NOW() - INTERVAL 1 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NOW() - INTERVAL 1 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), 2700.00),
+('HHH88H', 6, 1, NOW() - INTERVAL 1 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NOW() - INTERVAL 1 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), 8700.00),
+
+-- Movimientos de AYER (Bicicletas sin salida ni cobro)
+('112233445566', 7, 1, NOW() - INTERVAL 1 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NULL, NULL, 0.00),
+('998877665544', 7, 1, NOW() - INTERVAL 1 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NULL, NULL, 0.00),
+('554433221100', 7, 1, NOW() - INTERVAL 1 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 1 DAY AS DATE), NULL, NULL, 0.00),
+
+-- Movimientos de hace 2 días (Con salida)
+('BCD890', 1, 1, NOW() - INTERVAL 2 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NOW() - INTERVAL 2 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), 6900.00),
+('EFG123', 1, 1, NOW() - INTERVAL 2 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NOW() - INTERVAL 2 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), 9500.00),
+('KLM789', 1, 1, NOW() - INTERVAL 2 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NOW() - INTERVAL 2 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), 14700.00),
+('NOP012', 1, 1, NOW() - INTERVAL 2 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NOW() - INTERVAL 2 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), 4300.00),
+('JJJ00J', 6, 1, NOW() - INTERVAL 2 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NOW() - INTERVAL 2 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), 4200.00),
+('KKK11K', 6, 1, NOW() - INTERVAL 2 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NOW() - INTERVAL 2 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), 5700.00),
+('MMM33M', 6, 1, NOW() - INTERVAL 2 DAY - INTERVAL 7 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NOW() - INTERVAL 2 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), 8700.00),
+('NNN44N', 6, 1, NOW() - INTERVAL 2 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NOW() - INTERVAL 2 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), 2700.00),
+
+-- Movimientos de hace 2 días (Bicicletas sin salida ni cobro)
+('123456789012', 7, 1, NOW() - INTERVAL 2 DAY - INTERVAL 8 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NULL, NULL, 0.00),
+('204060801030', 7, 1, NOW() - INTERVAL 2 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NULL, NULL, 0.00),
+('706050403020', 7, 1, NOW() - INTERVAL 2 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 2 DAY AS DATE), NULL, NULL, 0.00),
+
+-- Movimientos de hace 3 días (Con salida)
+('QRS345', 1, 1, NOW() - INTERVAL 3 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), 6900.00),
+('TUV678', 1, 1, NOW() - INTERVAL 3 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), 9500.00),
+('WXY901', 1, 1, NOW() - INTERVAL 3 DAY - INTERVAL 8 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), 17300.00),
+('ZAB234', 1, 1, NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NOW() - INTERVAL 3 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), 4300.00),
+('OOO55O', 6, 1, NOW() - INTERVAL 3 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), 4200.00),
+('PPP66P', 6, 1, NOW() - INTERVAL 3 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), 5700.00),
+('QQQ77Q', 6, 1, NOW() - INTERVAL 3 DAY - INTERVAL 8 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), 10200.00),
+('RRR88R', 6, 1, NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NOW() - INTERVAL 3 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), 2700.00),
+
+-- Movimientos de hace 3 días (Bicicletas sin salida ni cobro)
+('889900112233', 7, 1, NOW() - INTERVAL 3 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NULL, NULL, 0.00),
+('445566778899', 7, 1, NOW() - INTERVAL 3 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NULL, NULL, 0.00),
+('334455667788', 7, 1, NOW() - INTERVAL 3 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 3 DAY AS DATE), NULL, NULL, 0.00),
+
+-- Movimientos de hace 4 días (Con salida)
+('CDE567', 1, 1, NOW() - INTERVAL 4 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NOW() - INTERVAL 4 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), 14700.00),
+('FGH890', 1, 1, NOW() - INTERVAL 4 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NOW() - INTERVAL 4 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), 9500.00),
+('IJK111', 1, 1, NOW() - INTERVAL 4 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NOW() - INTERVAL 4 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), 6900.00),
+('LMN222', 1, 1, NOW() - INTERVAL 4 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NOW() - INTERVAL 4 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), 6900.00),
+('SSS99S', 6, 1, NOW() - INTERVAL 4 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NOW() - INTERVAL 4 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), 8700.00),
+('TTT00T', 6, 1, NOW() - INTERVAL 4 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NOW() - INTERVAL 4 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), 5700.00),
+('UUU11U', 6, 1, NOW() - INTERVAL 4 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NOW() - INTERVAL 4 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), 4200.00),
+('VVV22V', 6, 1, NOW() - INTERVAL 4 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NOW() - INTERVAL 4 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), 4200.00),
+
+-- Movimientos de hace 4 días (Bicicletas sin salida ni cobro)
+('223344556677', 7, 1, NOW() - INTERVAL 4 DAY - INTERVAL 7 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NULL, NULL, 0.00),
+('443322110099', 7, 1, NOW() - INTERVAL 4 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NULL, NULL, 0.00),
+('990011223344', 7, 1, NOW() - INTERVAL 4 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 4 DAY AS DATE), NULL, NULL, 0.00),
+
+-- Movimientos de hace 5 días (Con salida)
+('OPQ333', 1, 1, NOW() - INTERVAL 5 DAY - INTERVAL 7 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NOW() - INTERVAL 5 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), 17300.00),
+('UVW555', 1, 1, NOW() - INTERVAL 5 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NOW() - INTERVAL 5 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), 14700.00),
+('XYZ666', 1, 1, NOW() - INTERVAL 5 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NOW() - INTERVAL 5 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), 6900.00),
+('AAB111', 1, 1, NOW() - INTERVAL 5 DAY - INTERVAL 8 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NOW() - INTERVAL 5 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), 17300.00),
+('WWW33W', 6, 1, NOW() - INTERVAL 5 DAY - INTERVAL 8 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NOW() - INTERVAL 5 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), 10200.00),
+('ZZZ66Z', 6, 1, NOW() - INTERVAL 5 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NOW() - INTERVAL 5 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), 4200.00),
+('ABA12A', 6, 1, NOW() - INTERVAL 5 DAY - INTERVAL 7 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NOW() - INTERVAL 5 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), 10200.00),
+('BCB34B', 6, 1, NOW() - INTERVAL 5 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NOW() - INTERVAL 5 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), 2700.00),
+
+-- Movimientos de hace 5 días (Bicicletas sin salida ni cobro)
+('887766554433', 7, 1, NOW() - INTERVAL 5 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NULL, NULL, 0.00),
+('776655443322', 7, 1, NOW() - INTERVAL 5 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NULL, NULL, 0.00),
+('665544332211', 7, 1, NOW() - INTERVAL 5 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 5 DAY AS DATE), NULL, NULL, 0.00),
+
+-- Movimientos de hace 6 días (Con salida)
+('BBC222', 1, 1, NOW() - INTERVAL 6 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NOW() - INTERVAL 6 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), 4300.00),
+('EEF555', 1, 1, NOW() - INTERVAL 6 DAY - INTERVAL 8 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NOW() - INTERVAL 6 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), 17300.00),
+('FFG666', 1, 1, NOW() - INTERVAL 6 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NOW() - INTERVAL 6 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), 9500.00),
+('GGH777', 1, 1, NOW() - INTERVAL 6 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NOW() - INTERVAL 6 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), 12100.00),
+('EFE90E', 6, 1, NOW() - INTERVAL 6 DAY - INTERVAL 7 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NOW() - INTERVAL 6 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), 10200.00),
+('FGF12F', 6, 1, NOW() - INTERVAL 6 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NOW() - INTERVAL 6 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), 5700.00),
+('GHG34G', 6, 1, NOW() - INTERVAL 6 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NOW() - INTERVAL 6 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), 7200.00),
+('HIH56H', 6, 1, NOW() - INTERVAL 6 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NOW() - INTERVAL 6 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), 4200.00),
+
+-- Movimientos de hace 6 días (Bicicletas sin salida ni cobro)
+('556677889900', 7, 1, NOW() - INTERVAL 6 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NULL, NULL, 0.00),
+('121234345656', 7, 1, NOW() - INTERVAL 6 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 6 DAY AS DATE), NULL, NULL, 0.00),
+
+-- Movimientos de hace 7 días (Con salida)
+('HHI888', 1, 1, NOW() - INTERVAL 7 DAY - INTERVAL 4 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), NOW() - INTERVAL 7 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), 6900.00),
+('IIJ999', 1, 1, NOW() - INTERVAL 7 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), NOW() - INTERVAL 7 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), 12100.00),
+('JJK000', 1, 1, NOW() - INTERVAL 7 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), NOW() - INTERVAL 7 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), 4300.00),
+('KKL112', 1, 1, NOW() - INTERVAL 7 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), NOW() - INTERVAL 7 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), 12100.00),
+('IJI78I', 6, 1, NOW() - INTERVAL 7 DAY - INTERVAL 6 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), NOW() - INTERVAL 7 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), 7200.00),
+('JKJ90J', 6, 1, NOW() - INTERVAL 7 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), NOW() - INTERVAL 7 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), 2700.00),
+('LKL12L', 6, 1, NOW() - INTERVAL 7 DAY - INTERVAL 5 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), NOW() - INTERVAL 7 DAY - INTERVAL 1 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), 7200.00),
+('NMN56N', 6, 1, NOW() - INTERVAL 7 DAY - INTERVAL 3 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), NOW() - INTERVAL 7 DAY - INTERVAL 2 HOUR, CAST(NOW() - INTERVAL 7 DAY AS DATE), 2700.00),
+
+-- Movimientos de hace 8 días (Vehículos que siguen adentro desde fechas anteriores)
+('HIJ456', 1, 1, NOW() - INTERVAL 8 DAY, CAST(NOW() - INTERVAL 8 DAY AS DATE), NULL, NULL, 0.00),
+('RST444', 1, 1, NOW() - INTERVAL 9 DAY, CAST(NOW() - INTERVAL 9 DAY AS DATE), NULL, NULL, 0.00),
+('CCD333', 1, 1, NOW() - INTERVAL 10 DAY, CAST(NOW() - INTERVAL 10 DAY AS DATE), NULL, NULL, 0.00),
+('LLM223', 1, 1, NOW() - INTERVAL 11 DAY, CAST(NOW() - INTERVAL 11 DAY AS DATE), NULL, NULL, 0.00),
+('NNO445', 1, 1, NOW() - INTERVAL 12 DAY, CAST(NOW() - INTERVAL 12 DAY AS DATE), NULL, NULL, 0.00),
+('DDD44D', 6, 1, NOW() - INTERVAL 8 DAY, CAST(NOW() - INTERVAL 8 DAY AS DATE), NULL, NULL, 0.00),
+('LLL22L', 6, 1, NOW() - INTERVAL 9 DAY, CAST(NOW() - INTERVAL 9 DAY AS DATE), NULL, NULL, 0.00),
+('XXX44X', 6, 1, NOW() - INTERVAL 10 DAY, CAST(NOW() - INTERVAL 10 DAY AS DATE), NULL, NULL, 0.00),
+('CDC56C', 6, 1, NOW() - INTERVAL 11 DAY, CAST(NOW() - INTERVAL 11 DAY AS DATE), NULL, NULL, 0.00),
+('MLM34M', 6, 1, NOW() - INTERVAL 12 DAY, CAST(NOW() - INTERVAL 12 DAY AS DATE), NULL, NULL, 0.00),
+('ONO78O', 6, 1, NOW() - INTERVAL 13 DAY, CAST(NOW() - INTERVAL 13 DAY AS DATE), NULL, NULL, 0.00);
